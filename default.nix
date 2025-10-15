@@ -16,7 +16,7 @@ let psp-at3tool-exe = pkgs.requireFile {
   hash = "sha256-gjGZETxZ/80/w+GFXbuIqc1E0p6C56fPxC6MkvKmE0E=";
 };
 in with pkgs;
-stdenv_32bit.mkDerivation {
+pkgsi686Linux.stdenv.mkDerivation {
   pname = "psp-at3tool";
   version = "2.0.0.0";
   src = builtins.path {
@@ -31,15 +31,7 @@ stdenv_32bit.mkDerivation {
       ];
     };
   };
-  nativeBuildInputs = [ hexdump nasm pkgconf ];
-  configurePhase = ''
-    runHook preConfigure
-
-    substituteInPlace convert.sh \
-      --replace-fail "ld -o" "ld -L ${pkgsi686Linux.buildPackages.glibc}/lib -o"
-
-    runHook postConfigure
-  '';
+  nativeBuildInputs = [ hexdump nasm ];
   buildPhase = ''
     runHook preBuild
 
